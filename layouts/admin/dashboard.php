@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Hasil Vote</title>
+	<title>Daftar Pemilih</title>
 	<link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
 	<script type="text/javascript" src="../../assets/js/Chart.js"></script>
 	<script type="text/javascript" src="../../assets/js/chartjs-datalabels.min.js"></script>
@@ -10,19 +10,22 @@
 
 	<?php 
 		include '../../database/connection.php';
+
+		$rows = mysqli_query($connect, "SELECT voting.*, pemilih.nama as nama, pemilih.nim as nim FROM voting inner join pemilih on voting.pemilih_id = pemilih.id");			
+		$no = 0;	
 	?>
 
 	<div class="">
 		<div class="row" style="margin-top: 5%;" align="center">
 			<div class="col-lg-12">
-				<h1><b>Hasil Vote Presma & Wapresma BEM STT NF 2020</b></h1>
+				<h1><b>Daftar Pemilih Mahasiswa STT Terpadu NF 2020</b></h1>
 			</div>
 		</div>
 		<div class="row" style="margin-top: 5%;">
 			<div class="col-md-3" align="center">
-				<img src="../../image/paslon1.png" height="20%">  
+				<img src="../../image/paslon1.png" height="250px">  
 				<br>
-				Chairil Hilman Syah
+				<strong>Chairil Hilman Syah</strong>
 				<br>
 				Aditya Fitriadi
 				<br><br>
@@ -32,9 +35,9 @@
 				<canvas id="myChart"></canvas>
 			</div>
 			<div class="col-md-3" align="center">
-				<img src="../../image/paslon2.png" height="20%">  
+				<img src="../../image/paslon2.png" height="250px">  
 				<br>
-				Shidqi Anshori Rabbani
+				<strong>Shidqi Anshori Rabbani</strong>
 				<br>
 				Silmi Rizqi Ramadhani
 				<br><br>
@@ -43,25 +46,50 @@
 		</div>
 	</div>
 
+	<div class="">
+		<div class="row" style="margin-top: 5%;" align="center">
+			<div class="col-lg-12" style="padding-left: 5%; padding-right: 5%;">
+				<table class="table">
+					<thead class="thead-dark">
+					<tr>
+						<th>No</th>
+						<th>NIM</th>
+						<th>Nama</th>
+						<th>Waktu</th>
+					</tr>
+					</thead>
+					<?php foreach($rows as $row){ ?>
+					<tr>
+						<th><?php echo $no++ ?></th>
+						<th><?php echo $row['nim'] ?></th>
+						<th><?php echo $row['nama'] ?></th>
+						<th><?php echo $row['waktu'] ?></th>
+					</tr>		
+					<?php } ?>		
+				</table>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		var data = [{			
 			data: [
 				<?php 
-					$calon1 = mysqli_query($connect,"select * from voting where peserta_id = 1");
-					echo mysqli_num_rows($calon1);
+					$belum_milih = mysqli_query($connect,"select * from pemilih where status = 0");
+					echo mysqli_num_rows($belum_milih);
 				?>, 
 				<?php 
-					$calon2 = mysqli_query($connect,"select * from voting where peserta_id = 2");
-					echo mysqli_num_rows($calon2);
+					$sudah_milih = mysqli_query($connect,"select * from pemilih where status = 1");
+					echo mysqli_num_rows($sudah_milih);
 				?>
 			],					
 			borderColor: [				
-				'rgba(255,99,132,1)',		
-				'rgba(54, 162, 235, 1)'						
+				'rgba(200,200,200,1)',		
+				'rgba(50, 50, 50, 1)'						
 			],
 			backgroundColor: [			
-				'rgba(255, 99, 132, 0.2)',		
-				'rgba(54, 162, 235, 0.2)'						
+				'rgba(255, 255, 255, 0.2)',		
+				'rgba(0, 0, 0, 0.2)'						
 			],
 			borderWidth: 1
 		}];
@@ -73,12 +101,12 @@
 			},
 			plugins: {
 				datalabels: {
-					color: '#fff',
+					color: '#000',
 					anchor: 'end',
 					align: 'start',
 					offset: 20,
 					borderWidth: 2,
-					borderColor: '#fff',
+					borderColor: '#000',
 					borderRadius: 25,
 					backgroundColor: (context) => {
 						return context.dataset.backgroundColor;
@@ -86,10 +114,10 @@
 					// backgroundColor: 'red',
 					font: {
 						weight: 'bold',
-						size: '25'
+						size: '18'
 					},
 					formatter: (value) => {
-						return value + ' Suara';
+						return value + ' Mahasiswa';
 					}
 				}
 			}
@@ -99,7 +127,7 @@
 		var myChart = new Chart(ctx, {
 			type: 'pie',
 			data: {
-				labels: ["1kutserta", "Simi-Simi"],
+				labels: ["Belum Pemilih", "Sudah Memilih"],
 				datasets: data
 			},
 			options: options

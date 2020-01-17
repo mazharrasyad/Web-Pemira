@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="card col-md-6" style="border: 0; background-color: #eff8f9ff">
-                    <img class="card-img-top" style="padding-left: 30%; padding-right: 30%; padding-top: 20%" src="../image/paslon2.png">
+                    <img class="card-img-top" style="padding-left: 30%; padding-right: 30%; padding-top: 22%" src="../image/paslon2.png">
                     <div class="card-body">
                     <h5 class="card-title">Shidqi Anshori Rabbani & Silmi Rizqi Ramadhani</h5>
                     <p class="card-text"><b>Nomor Urut 2</b></p>
@@ -84,11 +84,12 @@
                 include_once("../database/connection.php");
 
                 $pemilih_id = $_POST['pemilih_id'];
-                $peserta_id = $_POST['submit'];                
+                $peserta_id = password_hash($_POST['submit'], PASSWORD_DEFAULT); 
+                $peserta = $_POST['submit'];               
 
                 mysqli_query($connect, "INSERT INTO voting (pemilih_id, peserta_id, waktu) VALUES('$pemilih_id','$peserta_id', now())");
                 mysqli_query($connect, "UPDATE pemilih SET status = 1 where id = $pemilih_id");
-                mysqli_query($connect, "UPDATE peserta SET suara = suara + 1 where id = $peserta_id");
+                mysqli_query($connect, "UPDATE peserta SET suara = suara + 1 where id = $peserta");
                 
                 setcookie("message", "Selamat Anda Telah Memilih", time()+3600, '/');            
 

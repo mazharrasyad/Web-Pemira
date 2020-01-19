@@ -11,7 +11,7 @@
 	<?php 
 		include '../../database/connection.php';
 
-		$rows = mysqli_query($connect, "SELECT voting.*, pemilih.nama as nama, pemilih.nim as nim FROM voting inner join pemilih on voting.pemilih_id = pemilih.id");			
+		$rows = mysqli_query($connect, "SELECT voting.*, pemilih.nama as nama, pemilih.nim as nim FROM voting inner join pemilih on voting.pemilih_id = pemilih.id order by id desc");			
 		$no = 0;	
 	?>
 
@@ -60,7 +60,7 @@
 					</thead>
 					<?php foreach($rows as $row){ ?>
 					<tr>
-						<th><?php echo $no++ ?></th>
+						<th><?php echo $row['id'] ?></th>
 						<th><?php echo $row['nim'] ?></th>
 						<th><?php echo $row['nama'] ?></th>
 						<th><?php echo $row['waktu'] ?></th>
@@ -127,7 +127,7 @@
 		var myChart = new Chart(ctx, {
 			type: 'pie',
 			data: {
-				labels: ["Belum Pemilih", "Sudah Memilih"],
+				labels: ["Belum Memilih", "Sudah Memilih"],
 				datasets: data
 			},
 			options: options

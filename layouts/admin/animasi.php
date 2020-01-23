@@ -88,7 +88,7 @@
 				}
 			},
 			animation: {
-				duration: 50000
+				duration: 50
 			},
 			scales: {
 				yAxes: [{

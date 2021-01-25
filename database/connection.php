@@ -1,8 +1,8 @@
 <?php
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "dbpemira";
+    $host = "remotemysql.com";
+    $username = "vc20CxDRQj";
+    $password = "qEx9qhwMnG";
+    $database = "vc20CxDRQj";
 
     $connect = mysqli_connect($host, $username, $password, $database);
 ?>
